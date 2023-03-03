@@ -1,0 +1,25 @@
+body{
+    margin: 0;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+#playground{
+    background-color: aliceblue;
+    width: 80vw;
+    height: 70vh;
+    margin-top: 50px;
+    position: relative;
+    
+}
+#player{
+    background-color: darkblue;
+    height: 5vh;
+    width: 5vw;
+    position: absolute;
+    left: 38vw;
+    bottom: 0vh;
+}
