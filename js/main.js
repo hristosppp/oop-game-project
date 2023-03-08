@@ -10,9 +10,10 @@ class Game {
         this.obstacleOneArr = [];
         this.obstacleTwoArr = [];
         this.obstacleThreeArr = [];
+        this.newBullet = null;
         this.bulletArr = [];
-        this.bullet.positionX = this.player.positionX + (this.player.width/ 2) + "vw";
-        this.bullet.positionY = this.player.positionY + this.player.height + "vh";
+
+
     }
     start(){
         this.player = new Player();
@@ -20,18 +21,18 @@ class Game {
 
         setInterval(() => {
             const newObst = new Obstacle ();
-            newObst.createObstacleOne();
+            newObst.obstacleOne();
             this.obstacleOneArr.push(newObst);
 
         }, 2000)
         setInterval(() => {
             const newObst = new Obstacle ();
-            newObst.createObstacleTwo();
+            newObst.obstacleTwo();
             this.obstacleTwoArr.push(newObst);
         }, 3500)
         setInterval(() => {
             const newObst = new Obstacle ();
-            newObst.createObstacleThree();
+            newObst.obstacleThree();
             this.obstacleThreeArr.push(newObst);
 
         }, 5000)
@@ -58,12 +59,6 @@ class Game {
                
             })
         }, 50)
-        setInterval(() => {
-            this.bulletArr.forEach((element) => {
-                console.log("so weit bin ich schon mal")
-                element.this.moveUp();
-            }, 12)
-        })
     }
     addEventList(){
         document.addEventListener("keydown", (event) => {
@@ -84,7 +79,7 @@ class Game {
             }else if(event.key === "ArrowRight" && event.key === "ArrowUp"){
                 this.player.moveDiagonalyUpRight();
             }else if(event.key === " "){
-                this.shoot();
+                this.shooting();
             }
         })
     }
@@ -95,12 +90,9 @@ class Game {
             this.player.positionY < obstacle.positionY + obstacle.height &&
             this.player.height + this.player.positionY > obstacle.positionY
         ){
-            if(this.player.health > 1){
-                this.player.health--;
-                
-            }else{
+
                 console.log("Game Over")
-            }
+            
         }
 
     }
@@ -111,18 +103,15 @@ class Game {
             
         }
     }
-    shoot(){
-        this.bullet = document.createElement("div");
-        this.bullet.className = "bullet";
-        this.bullet.style.left = this.bullet.positionX;
-        this.bullet.style.bottom = this.bullet.positionY;
-        const parElement = document.getElementById("playground");
-        parElement.appendChild(this.bullet);
-        this.bulletArr.push(this.bullet);
-    }
-    moveUp(){
-        this.bullet.positionY++;
-        this.bullet.style.bottom = this.bullet.positionY + "vh";
+    shooting(){
+        this.bulletArr.push(this.player.createBullet());
+        setInterval(() => {
+        
+                this.player.bulletUp();
+            
+
+        }, 16)
+
     }
 }
 
@@ -130,15 +119,13 @@ class Player {
     constructor(){
         this.positionX = 34;
         this.positionY = 0;
-        this.width = 7;
-        this.height= 7;
+        this.width = 5;
+        this.height= 12;
         this.playerE = document.getElementById("player");
         this.playerE.style.width = this.width +"vw";
         this.playerE.style.height = this.height +"vh";
-        this.health = 3;
-
-
-       
+        this.bulletPositionY =  this.positionY + (this.height/2);
+      
     }
     moveLeft(){
         if(this.positionX > 0){
@@ -191,7 +178,20 @@ class Player {
         this.playerE.style.left = this.positionX + "vw";
         this.playerE.style.bottom = this.positionY + "vh";
     }
-    
+    createBullet(){
+        this.bullet = document.createElement("div");
+        this.bullet.className = "bullet";
+        this.bullet.style.left = this.positionX + (this.width/2) + "vw";
+        this.bullet.style.bottom = this.bulletPositionY + "vh";
+
+        const parElm = document.getElementById("playground");
+        parElm.appendChild(this.bullet);
+      
+    }
+    bulletUp(){
+        this.bulletPositionY++;
+        this.bullet.style.bottom =  this.bulletPositionY + "vh";
+    }
 }
 
 
@@ -199,50 +199,35 @@ class Obstacle {
     constructor(){
         this.positionY = 70;
         this.width = 10;
-        this.height = 10;
+        this.height = 14;
         this.positionX = Math.floor(Math.random() * (85 - 15 - this.width));
         
         this.obstacle = null;
 
        
     }
-    createObstacleOne(){
-        this.obstacle = document.createElement("div");
+    obstacleOne(){
+        this.createObstacle();
+        
+        this.obstacle.id = "obstOne";
 
-        this.obstacle.className = "obstacles";
-    
-        this.obstacle.style.width = this.width + "vw";
-        this.obstacle.style.height = this.height + "vh";
-        this.obstacle.style.left = this.positionX + "vw";
-
-        const parElm = document.getElementById("playground");
-        parElm.appendChild(this.obstacle);
     }
-    createObstacleTwo(){
-        this.obstacle = document.createElement("div");
-
-        this.obstacle.className = "obstacles";
-
-        this.obstacle.style.width = this.width + "vw";
-        this.obstacle.style.height = this.height + "vh";
-        this.obstacle.style.left = this.positionX + "vw";
-        this.obstacle.style.backgroundColor = "white";
+    obstacleTwo(){
+        this.createObstacle();
+        this.obstacle.id = "obstTwo";
         
 
-        const parElm = document.getElementById("playground");
-        parElm.appendChild(this.obstacle);
     }
-    createObstacleThree(){
+    obstacleThree(){
+        this.createObstacle();
+        this.obstacle.id = "obstThree";
+
+    }
+    createObstacle(){
         this.obstacle = document.createElement("div");
-
-        this.obstacle.className = "obstacles";
-
         this.obstacle.style.width = this.width + "vw";
         this.obstacle.style.height = this.height + "vh";
         this.obstacle.style.left = this.positionX + "vw";
-        this.obstacle.style.backgroundColor = "pink";
-        
-
         const parElm = document.getElementById("playground");
         parElm.appendChild(this.obstacle);
     }
@@ -255,3 +240,4 @@ class Obstacle {
 
 const game = new Game();
 game.start();
+console.log(game.bulletArr);

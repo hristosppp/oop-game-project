@@ -1,25 +1,76 @@
 body{
+    
     margin: 0;
+    padding: 0;
     background-color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-image: url(../images/stars.jpeg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    
     
 }
+#header{
+    color: white;
+    font-size: xx-large;
+}
 #playground{
-    background-color: aliceblue;
-    width: 80vw;
-    height: 70vh;
-    margin-top: 50px;
+    background-image: url(../images/newSky.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: yellowgreen;
+    width: 70vw;
+    height: 80vh;
+    
     position: relative;
+    box-shadow: 2px 2px gold;
     
 }
 #player{
-    background-color: darkblue;
-    height: 5vh;
+    background-image: url(../images/yet.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    
+    height: 10vh;
     width: 5vw;
     position: absolute;
-    left: 38vw;
+    left: 34vw;
     bottom: 0vh;
+}
+
+.obstacles{
+    position: absolute;
+    bottom: 70vh;
+}
+#obstOne{
+    position: absolute;
+    bottom: 70vh;
+    background-image: url(../images/ufo.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#obstTwo{
+    position: absolute;
+    bottom: 70vh;
+    background-image: url(../images/spy-baloon.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#obstThree{
+    position: absolute;
+    bottom: 70vh;
+    background-image: url(../images/ufo-two.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bullet{
+    position: absolute;
+    background-image: url(../images/bullet.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 1.75vw;
+    height: 3.5vh;
 }
