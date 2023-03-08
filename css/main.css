@@ -7,11 +7,14 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url(../images/stars.jpeg);
+    background-image: url(../images/Background-moon.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    
-    
+}
+#section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
 }
 #header{
     color: white;
@@ -24,10 +27,11 @@ body{
     background-color: yellowgreen;
     width: 70vw;
     height: 80vh;
-    
     position: relative;
-    box-shadow: 2px 2px gold;
-    
+}
+#playground img{
+    max-width: 100%;
+    max-height: 100%;
 }
 #player{
     background-image: url(../images/yet.png);
@@ -45,6 +49,7 @@ body{
     position: absolute;
     bottom: 70vh;
 }
+
 #obstOne{
     position: absolute;
     bottom: 70vh;
@@ -71,6 +76,23 @@ body{
     background-image: url(../images/bullet.png);
     background-size: cover;
     background-repeat: no-repeat;
-    width: 1.75vw;
-    height: 3.5vh;
+
+}
+.side-box{
+    background-color: silver;
+    width: 10vw;
+    height: 80vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-radius: 10px;
+}
+.side-box img{
+    height: 40px;
+}
+.side-box p{
+    line-height: 50px;
+    text-align: center;
+    font-size: 22px;
 }

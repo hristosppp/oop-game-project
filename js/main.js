@@ -4,19 +4,23 @@ window.addEventListener("keydown", function(e) {
     }
 }, false);
 
+
 class Game {
     constructor(){
         this.player = null;
         this.obstacleOneArr = [];
         this.obstacleTwoArr = [];
         this.obstacleThreeArr = [];
-        this.newBullet = null;
-        this.bulletArr = [];
+        this.bulletsArr = [];
+        this.firstUfo = 0;
+        this.secondUfo = 0;
+        this.spyBalon = 0;
 
 
     }
     start(){
         this.player = new Player();
+        
         this.addEventList();
 
         setInterval(() => {
@@ -59,6 +63,17 @@ class Game {
                
             })
         }, 50)
+
+        setInterval(() => {
+            this.bulletsArr.forEach((element) => {
+                element.bulletMovement();
+                this.detectBulletCollision(element, this.obstacleOneArr);
+                this.detectBulletCollision(element, this.obstacleTwoArr);
+                this.detectBulletCollision(element, this.obstacleThreeArr);
+
+                this.removeBullet(element, this.bulletsArr);
+            }, 35)
+        })
     }
     addEventList(){
         document.addEventListener("keydown", (event) => {
@@ -90,11 +105,8 @@ class Game {
             this.player.positionY < obstacle.positionY + obstacle.height &&
             this.player.height + this.player.positionY > obstacle.positionY
         ){
-
-                console.log("Game Over")
-            
+               // alert("Game Over")   
         }
-
     }
     removeObstacle(elm,arr){
         if(elm.positionY <= 0){
@@ -104,15 +116,56 @@ class Game {
         }
     }
     shooting(){
-        this.bulletArr.push(this.player.createBullet());
-        setInterval(() => {
-        
-                this.player.bulletUp();
-            
+        this.shoot = new Shooting(this.player.positionX, this.player.positionY);
+        this.bulletsArr.push(this.shoot);
+    }
+    removeBullet(element, arr){
+        if(element.positionY >= 76){
+            element.bullet.remove();
+            arr.shift(element);
+        }
+    }
 
-        }, 16)
+    detectBulletCollision(element, arr){
+        arr.forEach((obstacle, index) => {
+            if(
+                element.positionX < obstacle.positionX + obstacle.width &&
+                element.positionX + element.width > obstacle.positionX &&
+                element.positionY < obstacle.positionY + obstacle.height &&
+                element.height + element.positionY > obstacle.positionY
+            ){  
+                arr[index].obstacle.remove();
+                arr.splice(index, 1);
+
+                if(arr === this.obstacleOneArr){
+                    this.firstUfo++;
+                    this.countPoints("one");
+                }else if(arr === this.obstacleTwoArr){
+                    this.secondUfo++;
+                    this.countPoints("two");
+                }else if(arr === this.obstacleThreeArr){
+                    this.spyBalon++;
+                    this.countPoints("three");
+                } 
+            }
+        })
+        
+    }
+    countPoints(value){
+        if(value  === "one"){
+            const ele = document.getElementById("one");
+            ele.innerHTML = parseInt(this.firstUfo);
+        }else if(value === "two"){
+            const ele = document.getElementById("two");
+            ele.innerHTML = parseInt(this.secondUfo);
+        }else if(value === "three"){
+            const ele = document.getElementById("three");
+            ele.innerHTML = parseInt(this.spyBalon);
+        }
 
     }
+    
+
 }
 
 class Player {
@@ -124,7 +177,7 @@ class Player {
         this.playerE = document.getElementById("player");
         this.playerE.style.width = this.width +"vw";
         this.playerE.style.height = this.height +"vh";
-        this.bulletPositionY =  this.positionY + (this.height/2);
+        
       
     }
     moveLeft(){
@@ -178,20 +231,8 @@ class Player {
         this.playerE.style.left = this.positionX + "vw";
         this.playerE.style.bottom = this.positionY + "vh";
     }
-    createBullet(){
-        this.bullet = document.createElement("div");
-        this.bullet.className = "bullet";
-        this.bullet.style.left = this.positionX + (this.width/2) + "vw";
-        this.bullet.style.bottom = this.bulletPositionY + "vh";
-
-        const parElm = document.getElementById("playground");
-        parElm.appendChild(this.bullet);
-      
-    }
-    bulletUp(){
-        this.bulletPositionY++;
-        this.bullet.style.bottom =  this.bulletPositionY + "vh";
-    }
+    
+    
 }
 
 
@@ -208,7 +249,6 @@ class Obstacle {
     }
     obstacleOne(){
         this.createObstacle();
-        
         this.obstacle.id = "obstOne";
 
     }
@@ -232,12 +272,39 @@ class Obstacle {
         parElm.appendChild(this.obstacle);
     }
     moveDown() {
-
-            this.positionY--;
-            this.obstacle.style.bottom = this.positionY + "vh";
+        this.positionY--;
+        this.obstacle.style.bottom = this.positionY + "vh";
     }
 }
 
+class Shooting {
+    constructor(positionX, positionY){
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.width = 2;
+        this.height = 4;
+        this.bullet = null;
+
+        this.createBullet();
+
+    }
+    createBullet(){
+        this.bullet = document.createElement("div");
+        this.bullet.className = "bullet";
+        this.bullet.style.left = this.positionX + (this.width/2) + "vw";
+        this.bullet.style.bottom = this.positionY+ this.height + "vh";
+        this.bullet.style.height = this.height + "vh";
+        this.bullet.style.width = this.width + "vw";
+
+        const parElm = document.getElementById("playground");
+        parElm.appendChild(this.bullet);
+    }
+    bulletMovement(){
+        this.positionY++;
+        this.bullet.style.bottom = this.positionY+ this.height + "vh";
+    }
+}
+
+
 const game = new Game();
 game.start();
-console.log(game.bulletArr);
