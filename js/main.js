@@ -15,13 +15,14 @@ class Game {
         this.firstUfo = 0;
         this.secondUfo = 0;
         this.spyBalon = 0;
-
+        this.gameOver = null;
 
     }
     start(){
         this.player = new Player();
         
         this.addEventList();
+
 
         setInterval(() => {
             const newObst = new Obstacle ();
@@ -44,21 +45,21 @@ class Game {
         setInterval(() => {
             this.obstacleOneArr.forEach((element) => {
                 element.moveDown();
-                this.detectCollision(element);
+                this.detectCollision(element, this.obstacleOneArr);
                 this.removeObstacle(element, this.obstacleOneArr);
             })
         }, 30)
         setInterval(() => {
             this.obstacleTwoArr.forEach((element) => {
                 element.moveDown();
-                this.detectCollision(element);
+                this.detectCollision(element, this.obstacleTwoArr);
                 this.removeObstacle(element, this.obstacleTwoArr);
             })
         }, 70)
         setInterval(() => {
             this.obstacleThreeArr.forEach((element) => {
                 element.moveDown();
-                this.detectCollision(element);
+                this.detectCollision(element, this.obstacleThreeArr);
                 this.removeObstacle(element, this.obstacleThreeArr);
                
             })
@@ -72,10 +73,12 @@ class Game {
                 this.detectBulletCollision(element, this.obstacleThreeArr);
 
                 this.removeBullet(element, this.bulletsArr);
-            }, 35)
-        })
+            })
+        }, 16)
+        
     }
     addEventList(){
+
         document.addEventListener("keydown", (event) => {
             if(event.code === "ArrowLeft"){
                 this.player.moveLeft();
@@ -97,15 +100,28 @@ class Game {
                 this.shooting();
             }
         })
+        const lab = document.getElementById("restart");
+        lab.addEventListener("click", () => {
+             window.location.reload();
+        })
     }
-    detectCollision(obstacle){
+    detectCollision(obstacle, arr){
         if(
             this.player.positionX < obstacle.positionX + obstacle.width &&
             this.player.positionX + this.player.width > obstacle.positionX &&
             this.player.positionY < obstacle.positionY + obstacle.height &&
             this.player.height + this.player.positionY > obstacle.positionY
         ){
-               // alert("Game Over")   
+            if(this.player.playersHealth > 0){
+                
+                    obstacle.positionY -= 20;
+                    this.player.removeHealth();
+                    
+              
+            }else{
+                this.endGame();
+            }
+ 
         }
     }
     removeObstacle(elm,arr){
@@ -136,6 +152,9 @@ class Game {
             ){  
                 arr[index].obstacle.remove();
                 arr.splice(index, 1);
+                element.bullet.remove()
+                this.bulletsArr.splice(0,1)
+
 
                 if(arr === this.obstacleOneArr){
                     this.firstUfo++;
@@ -156,13 +175,24 @@ class Game {
             const ele = document.getElementById("one");
             ele.innerHTML = parseInt(this.firstUfo);
         }else if(value === "two"){
-            const ele = document.getElementById("two");
+            const ele = document.getElementById("three");
             ele.innerHTML = parseInt(this.secondUfo);
         }else if(value === "three"){
-            const ele = document.getElementById("three");
+            const ele = document.getElementById("two");
             ele.innerHTML = parseInt(this.spyBalon);
         }
 
+    }
+    endGame(){
+        this.gameOver = document.getElementById("game-over");
+        this.gameOver.style.visibility = "visible"; 
+
+        const oneResult = document.getElementById("one-result");
+        oneResult.innerHTML = this.firstUfo;
+        const twoResult = document.getElementById("two-result");
+        twoResult.innerHTML = this.spyBalon;
+        const threeResult = document.getElementById("three-result");
+        threeResult.innerHTML = this.secondUfo;
     }
     
 
@@ -177,6 +207,7 @@ class Player {
         this.playerE = document.getElementById("player");
         this.playerE.style.width = this.width +"vw";
         this.playerE.style.height = this.height +"vh";
+        this.playersHealth = 2;
         
       
     }
@@ -231,16 +262,22 @@ class Player {
         this.playerE.style.left = this.positionX + "vw";
         this.playerE.style.bottom = this.positionY + "vh";
     }
-    
+    removeHealth(){
+
+        this.playersHealth--;
+        const parImg = document.getElementById("parImg")
+        const chImg = document.getElementById("chImg")
+        parImg.removeChild(chImg);
+    }
     
 }
 
 
 class Obstacle {
     constructor(){
-        this.positionY = 70;
+        this.positionY = 65;
         this.width = 10;
-        this.height = 14;
+        this.height = 10;
         this.positionX = Math.floor(Math.random() * (85 - 15 - this.width));
         
         this.obstacle = null;
@@ -265,6 +302,7 @@ class Obstacle {
     }
     createObstacle(){
         this.obstacle = document.createElement("div");
+        this.obstacle.className = "obstDiv";
         this.obstacle.style.width = this.width + "vw";
         this.obstacle.style.height = this.height + "vh";
         this.obstacle.style.left = this.positionX + "vw";

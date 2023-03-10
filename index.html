@@ -4,27 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>UFO Attack</title>
 
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
 
-    <h1 id="header">Alien Attack</h1>
+    <h1 id="header">UFO Attack</h1>
 
     <section id="section">
         <div class="side-box">
-            <p><img src="./images/ufo.png" alt="something went wrong"> : <p id="one">0</p></p>
-            <p><img src="./images/ufo-two.png" alt="something went wrong"> : <p id="two">0</p></p>
-            <p><img src="./images/spy-baloon.png" alt="something went wrong"> : <p id="three">0</p></p>
-
+            <div class="side-div"><img src="./images/ufo.png" alt="something went wrong"><p id="one">0</p></div>
+            <div class="side-div"><img src="./images/ufo-two.png" alt="something went wrong"><p id="two">0</p></div>
+            <div class="side-div"><img src="./images/spy-baloon.png" alt="something went wrong"><p id="three">0</p></div>
+        <div id="parImg">
+            <img id="chImg" src="./images/heart.png" alt="something went wrong">
+            <img id="chImg"  src="./images/heart.png" alt="something went wrong">
+            <img id="chImg"  src="./images/heart.png" alt="something went wrong">
         </div>
+        </div>
+        
         <div id="playground">
-
+            
             <div id="player"></div>
 
         </div>
-        <div class="side-box"></div>
+
+        <div class="side-box side-box-two">
+            <h3>Instructions</h3>
+            <article>
+                Move the player with the Arrows of your Keyboard. 
+                Try to shoot as many Ufo's as you can.
+            </article>
+        </div>
+
+        <div id="game-over">
+            <h1>Game over</h1>
+            <button id="restart" type="button">Try again!</button>
+            <article>
+                <h3>Enemys killed</h3>
+                <div id="last-Div">
+                    <img src="./images/ufo.png" alt="something went wrong"><p id="one-result">0</p>
+                    <img src="./images/ufo-two.png" alt="something went wrong"><p id="two-result">0</p>
+                    <img src="./images/spy-baloon.png" alt="something went wrong"><p id="three-result">0</p>
+                </div>
+
+            </article>
+        </div>
     </section>
 
 
