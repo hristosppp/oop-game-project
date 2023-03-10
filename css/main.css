@@ -20,11 +20,12 @@ body{
 }
 #header{
     color: white;
-    font-size: xx-large;
+    font-size: 40px;
+    font-weight: 900;
+    text-shadow: 2px 2px  rgb(70,171,56);
 }
 #playground{
     background-image: url(../images/newSky.jpeg);
-   
     overflow: hidden;
     background-size: 100% 100%;
     width: 70vw;
@@ -65,6 +66,8 @@ body{
     bottom: 70vh;
     background-image: url(../images/ufo.png);
     background-size: cover;
+    background-attachment: scroll;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 #obstTwo{
@@ -164,7 +167,6 @@ body{
     border: 0.1px solid black;
 }
 #heartpic{
-    
     height: 30px;
     width: 80px;
 }
@@ -174,10 +176,8 @@ body{
 .mess{
     display: flex;
     flex-direction: row;
-    
 }
 #last-Div{
-    
     display: flex;
     justify-content: space-around;
 }
